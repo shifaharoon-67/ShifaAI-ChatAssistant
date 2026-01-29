@@ -1,80 +1,75 @@
 const chatContainer = document.getElementById("chatContainer");
-const userInput = document.getElementById("userInput");
+const inputField = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
 
-// 🔑 GROQ API KEY (frontend demo)
-const GROQ_API_KEY = "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";
+// 🔑 OpenRouter API key (frontend demo ONLY)
+const API_KEY = "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";
 
 async function sendMessage() {
-    const message = userInput.value.trim();
+    const message = inputField.value.trim();
     if (!message) return;
 
-    // Show user message
+    // User message
     const userDiv = document.createElement("div");
     userDiv.className = "user-message";
     userDiv.textContent = message;
     chatContainer.appendChild(userDiv);
 
-    userInput.value = "";
-    chatContainer.scrollTop = chatContainer.scrollHeight;
+    inputField.value = "";
 
-    // Typing indicator
-    const typingDiv = document.createElement("div");
-    typingDiv.className = "bot-message";
-    typingDiv.textContent = "ShifaAI is thinking...";
-    chatContainer.appendChild(typingDiv);
+    // Bot typing indicator
+    const botDiv = document.createElement("div");
+    botDiv.className = "bot-message";
+    botDiv.textContent = "ShifaAI is typing...";
+    chatContainer.appendChild(botDiv);
 
     try {
         const response = await fetch(
-            "https://api.groq.com/openai/v1/chat/completions",
+            "https://openrouter.ai/api/v1/chat/completions",
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${GROQ_API_KEY}`
+                    "Authorization": `Bearer ${API_KEY}`,
+                    "HTTP-Referer": window.location.href,
+                    "X-Title": "ShifaAI"
                 },
                 body: JSON.stringify({
-                    model: "llama3-8b-8192",
+                    model: "mistralai/mistral-7b-instruct",
                     messages: [
                         {
                             role: "system",
-                            content: "You are ShifaAI, a helpful AI assistant."
+                            content: "You are ShifaAI, a friendly and helpful AI assistant."
                         },
                         {
                             role: "user",
                             content: message
                         }
                     ],
-                    temperature: 0.7,
-                    max_tokens: 300
+                    max_tokens: 200
                 })
             }
         );
 
         const data = await response.json();
-        console.log("Groq response:", data);
+        console.log("OpenRouter response:", data);
 
-        typingDiv.remove();
-
-        const botDiv = document.createElement("div");
-        botDiv.className = "bot-message";
-        botDiv.textContent =
-            data?.choices?.[0]?.message?.content ||
-            "⚠️ AI responded but no text was returned.";
-
-        chatContainer.appendChild(botDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+        if (data.error) {
+            botDiv.textContent = "⚠️ " + data.error.message;
+        } else {
+            botDiv.textContent =
+                data.choices?.[0]?.message?.content || "⚠️ No reply from AI.";
+        }
 
     } catch (error) {
-        typingDiv.remove();
-        const errorDiv = document.createElement("div");
-        errorDiv.className = "bot-message";
-        errorDiv.textContent = "⚠️ Error connecting to AI.";
-        chatContainer.appendChild(errorDiv);
         console.error(error);
+        botDiv.textContent = "⚠️ Network or API error.";
     }
+
+    chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Enter key support
-userInput.addEventListener("keypress", function (e) {
+sendBtn.addEventListener("click", sendMessage);
+inputField.addEventListener("keydown", e => {
     if (e.key === "Enter") sendMessage();
 });
