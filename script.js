@@ -33,7 +33,7 @@ async function sendMessage() {
                 "X-Title": "ShifaAI Chat Assistant"
             },
             body: JSON.stringify({
-                model: "openai/gpt-3.5-turbo",
+                model: "meta-llama/llama-3.1-8b-instruct",
                 messages: [
                     { role: "system", content: "You are ShifaAI, a helpful AI assistant." },
                     { role: "user", content: message }
@@ -48,10 +48,19 @@ async function sendMessage() {
 
         typingDiv.remove();
 
-        let botText =
-            data?.choices?.[0]?.message?.content ||
-            data?.choices?.[0]?.text ||
-            "AI responded, but no text was returned.";
+        // 🔥 PROPER RESPONSE HANDLING
+        let botText = "";
+
+        if (data.error) {
+            botText = "⚠️ " + data.error.message;
+        } else if (data.choices && data.choices.length > 0) {
+            botText =
+                data.choices[0].message?.content ||
+                data.choices[0].text ||
+                "⚠️ AI sent an empty reply.";
+        } else {
+            botText = "⚠️ No choices returned by AI.";
+        }
 
         const botDiv = document.createElement("div");
         botDiv.className = "bot-message";
@@ -64,7 +73,7 @@ async function sendMessage() {
         typingDiv.remove();
         const errorDiv = document.createElement("div");
         errorDiv.className = "bot-message";
-        errorDiv.textContent = "⚠️ Error connecting to AI.";
+        errorDiv.textContent = "⚠️ Network or API error.";
         chatContainer.appendChild(errorDiv);
         console.error(error);
     }
