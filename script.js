@@ -2,7 +2,7 @@ const chatContainer = document.getElementById("chatContainer");
 const userInput = document.getElementById("userInput");
 
 // 🔑 OpenRouter API Key (frontend demo)
-const OPENROUTER_API_KEY = "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";
+const OPENROUTER_API_KEY = "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";
 
 async function sendMessage() {
     const message = userInput.value.trim();
