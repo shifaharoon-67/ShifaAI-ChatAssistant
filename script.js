@@ -1,8 +1,8 @@
 const chatContainer = document.getElementById("chatContainer");
 const userInput = document.getElementById("userInput");
 
-// ⚠️ Your OpenAI API key (frontend demo only)
-const OPENAI_API_KEY = "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";  // <- replace with your key
+// 🔑 OpenRouter API Key (frontend demo)
+const OPENROUTER_API_KEY = "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";
 
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -24,36 +24,40 @@ async function sendMessage() {
     chatContainer.appendChild(typingDiv);
 
     try {
-        // Call OpenAI API
-        const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${OPENAI_API_KEY}`
+                "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+                "HTTP-Referer": "https://shifaharoon-67.github.io",
+                "X-Title": "ShifaAI Chat Assistant"
             },
             body: JSON.stringify({
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: message }],
-                max_tokens: 150
+                model: "mistralai/mistral-7b-instruct",
+                messages: [
+                    { role: "system", content: "You are ShifaAI, a helpful AI assistant." },
+                    { role: "user", content: message }
+                ],
+                max_tokens: 200
             })
         });
 
         const data = await response.json();
-        const botMessage = data.choices[0].message.content;
-
         typingDiv.remove();
 
         const botDiv = document.createElement("div");
         botDiv.className = "bot-message";
-        botDiv.textContent = botMessage;
+        botDiv.textContent =
+            data.choices?.[0]?.message?.content || "No response received.";
         chatContainer.appendChild(botDiv);
+
         chatContainer.scrollTop = chatContainer.scrollHeight;
 
     } catch (error) {
         typingDiv.remove();
         const errorDiv = document.createElement("div");
         errorDiv.className = "bot-message";
-        errorDiv.textContent = "⚠️ Error: Unable to fetch response.";
+        errorDiv.textContent = "⚠️ Error connecting to AI.";
         chatContainer.appendChild(errorDiv);
         console.error(error);
     }
