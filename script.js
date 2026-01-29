@@ -33,22 +33,29 @@ async function sendMessage() {
                 "X-Title": "ShifaAI Chat Assistant"
             },
             body: JSON.stringify({
-                model: "mistralai/mistral-7b-instruct",
+                model: "openai/gpt-3.5-turbo",
                 messages: [
                     { role: "system", content: "You are ShifaAI, a helpful AI assistant." },
                     { role: "user", content: message }
                 ],
-                max_tokens: 200
+                max_tokens: 200,
+                temperature: 0.7
             })
         });
 
         const data = await response.json();
+        console.log("OpenRouter response:", data);
+
         typingDiv.remove();
+
+        let botText =
+            data?.choices?.[0]?.message?.content ||
+            data?.choices?.[0]?.text ||
+            "AI responded, but no text was returned.";
 
         const botDiv = document.createElement("div");
         botDiv.className = "bot-message";
-        botDiv.textContent =
-            data.choices?.[0]?.message?.content || "No response received.";
+        botDiv.textContent = botText;
         chatContainer.appendChild(botDiv);
 
         chatContainer.scrollTop = chatContainer.scrollHeight;
