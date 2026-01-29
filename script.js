@@ -30,7 +30,7 @@ async function sendMessage() {
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${API_KEY}`,
-                    "HTTP-Referer": "https://shifaharoon-67.github.io",
+                    "HTTP-Referer": "https://shifaharoon-67.github.io/ShifaAI-ChatAssistant/",
                     "X-Title": "ShifaAI"
                 },
                 body: JSON.stringify({
@@ -60,7 +60,6 @@ async function sendMessage() {
     chatContainer.scrollTop = chatContainer.scrollHeight;
 }
 
-// Enter key support
 inputField.addEventListener("keydown", e => {
     if (e.key === "Enter") sendMessage();
 });
