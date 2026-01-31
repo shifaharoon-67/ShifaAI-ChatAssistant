@@ -2,46 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ShifaAI</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: white;
-    }
-    #chatContainer {
-      height: 400px;
-      overflow-y: auto;
-      border: 1px solid #333;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    .user-message {
-      text-align: right;
-      margin: 5px;
-      color: #4caf50;
-    }
-    .bot-message {
-      text-align: left;
-      margin: 5px;
-      color: #00bcd4;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShifaAI ✨</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <h2>🤖 ShifaAI</h2>
+  <header>
+    <h1>🌸 ShifaAI</h1>
+    <p>Your Smart AI Assistant</p>
+  </header>
 
-  <div id="chatContainer"></div>
+  <main class="chat-container" id="chatContainer">
+    <div class="ai-message">
+      Hello 👋 I'm <strong>ShifaAI</strong>. Ask me anything!
+    </div>
+  </main>
 
-  <input
-    type="text"
-    id="userInput"
-    placeholder="Type your message..."
-    style="width: 80%; padding: 8px;"
-  />
-  <button onclick="sendMessage()">Send</button>
+  <footer>
+    <input type="text" id="userInput" placeholder="Ask something..." />
+    <button onclick="sendMessage()">➤</button>
+  </footer>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
