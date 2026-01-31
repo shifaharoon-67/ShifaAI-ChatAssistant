@@ -2,30 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ShifaAI ✨</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>ShifaAI | Smart AI Assistant</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
-  <header>
-    <h1>🌸 ShifaAI</h1>
+  <!-- Header -->
+  <header class="header">
+    <h1>🤖 ShifaAI</h1>
     <p>Your Smart AI Assistant</p>
   </header>
 
-  <main class="chat-container" id="chatContainer">
-    <div class="ai-message">
-      Hello 👋 I'm <strong>ShifaAI</strong>. Ask me anything!
+  <!-- Chat Container -->
+  <div class="chat-container" id="chatContainer">
+    <div class="bot-message">
+      Hello 👋 I’m <b>ShifaAI</b>. Ask me anything!
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <input type="text" id="userInput" placeholder="Ask something..." />
-    <button onclick="sendMessage()">➤</button>
-  </footer>
+  <!-- Input Area -->
+  <div class="input-area">
+    <input
+      type="text"
+      id="userInput"
+      placeholder="Ask something..."
+      autocomplete="off"
+    />
+    <button onclick="sendMessage()">Send</button>
+  </div>
 
-<script src="script.js"></script>
+  <!-- Script -->
+  <script src="script.js"></script>
+
 </body>
 </html>
